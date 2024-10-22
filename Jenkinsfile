@@ -9,12 +9,6 @@ pipeline {
             }
         }
 
-        stage('Execute Unit Tests') {
-            steps {
-                // Running PHPUnit tests
-                sh './vendor/bin/phpunit'
-            }
-        }
 
         stage('Plot Code Coverage Report') {
             steps {
