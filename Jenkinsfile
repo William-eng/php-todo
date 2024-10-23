@@ -2,6 +2,17 @@ pipeline {
     agent any
 
     stages {
+         stage('SonarQube Quality Gate') {
+            environment {
+                scannerHome = tool 'SonarQubeScanner'
+                      }
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                  }
+
+               }
+                 }
         stage('Code Analysis') {
             steps {
                 // Running PHPLoc for code analysis
