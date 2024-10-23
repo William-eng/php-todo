@@ -103,7 +103,7 @@ pipeline {
                       }
             steps {
                 withSonarQubeEnv('sonarqube') {
-                    sh 'sonar-scanner -Dsonar.projectKey=php-todo'
+                   // sh 'sonar-scanner -Dsonar.projectKey=php-todo'
                     sh "/opt/sonar-scanner/bin/sonar-scanner"
                   }
 
