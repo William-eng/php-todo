@@ -2,17 +2,6 @@ pipeline {
     agent any
 
     stages {
-         stage('SonarQube Quality Gate') {
-            environment {
-                scannerHome = tool 'SonarQubeScanner'
-                      }
-            steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh "${scannerHome}/bin/sonar-scanner"
-                  }
-
-               }
-                 }
         stage('Code Analysis') {
             steps {
                 // Running PHPLoc for code analysis
@@ -108,7 +97,17 @@ pipeline {
             }
   
         }
+        stage('SonarQube Quality Gate') {
+            environment {
+                scannerHome = tool 'SonarQubeScanner'
+                      }
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                  }
 
+               }
+                 }
         stage ('Deploy to Dev Environment') {
     steps {
     build job: 'ansible-project/main', parameters: [[$class: 'StringParameterValue', name: 'env', value: 'dev']], propagate: false, wait: true
