@@ -109,10 +109,25 @@ pipeline {
                }
                  }
         stage ('Deploy to Dev Environment') {
-    steps {
-    build job: 'ansible-project/main', parameters: [[$class: 'StringParameterValue', name: 'env', value: 'dev']], propagate: false, wait: true
+            steps {
+                build job: 'ansible-project/main', parameters: [[$class: 'StringParameterValue', name: 'env', value: 'dev']], propagate: false, wait: true
+                    }
+                      }
+         stage('SonarQube Quality Gate') {
+              when { branch pattern: "^develop*|^hotfix*|^release*|^main*", comparator: "REGEXP"}
+                environment {
+                    scannerHome = tool 'SonarQubeScanner'
+                        }
+                steps {
+                    withSonarQubeEnv('sonarqube') {
+                        sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
+                        }
+                        timeout(time: 1, unit: 'MINUTES') {
+                            waitForQualityGate abortPipeline: true
+            }
+        }
     }
-  }
+
 
         
     }
