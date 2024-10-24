@@ -103,8 +103,7 @@ pipeline {
                       }
             steps {
                 withSonarQubeEnv('sonarqube') {
-                    sh 'sonar-scanner -Dsonar.projectKey=php-todo'
-                    sh "${scannerHome}/bin/sonar-scanner"
+                    sh "/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQubeScanner/bin/sonar-scanner"
                   }
 
                }
